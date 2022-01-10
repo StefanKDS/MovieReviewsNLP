@@ -1,14 +1,17 @@
 from helper_functions import calculate_results
 import pandas as pd
-import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+from sklearn.naive_bayes import MultinomialNB
+from sklearn.pipeline import Pipeline
+from sklearn.model_selection import train_test_split
 
+# Import data
 train_df = pd.read_table("Data/train.tsv")
 train_df.head()
 
+# Shuffle data
 train_df_shuffled = train_df.sample(frac=1, random_state=42) # shuffle with random_state=42 for reproducibility
 train_df_shuffled.head()
-
-from sklearn.model_selection import train_test_split
 
 # Use train_test_split to split training data into training and validation sets
 train_sentences, val_sentences, train_labels, val_labels = train_test_split(train_df_shuffled["Phrase"].to_numpy(),
@@ -18,11 +21,6 @@ train_sentences, val_sentences, train_labels, val_labels = train_test_split(trai
 
 len(train_sentences), len(train_labels), len(val_sentences), len(val_labels)
 train_sentences[:10], train_labels[:10]
-
-
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.naive_bayes import MultinomialNB
-from sklearn.pipeline import Pipeline
 
 # Create tokenization and modelling pipeline
 model_0 = Pipeline([
